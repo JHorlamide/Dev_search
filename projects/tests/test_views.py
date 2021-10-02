@@ -21,7 +21,7 @@ class TestProjectList(TestCase):
         self.assertEqual(self.response.status_code, 200)
 
     def test_projects_views_func(self):
-        view = resolve('/project/')
+        view = resolve('/projects/')
         self.assertEqual(view.func, projects)
 
     # def test_projects_views_contain_link_to_single_project_view(self):
@@ -31,7 +31,7 @@ class TestProjectList(TestCase):
     #                         "href='{0}'".format(project_view_url), html=True)
 
     def test_project_view_contains_csrf_token(self):
-        pass
+        self.assertContains(self.response, 'csrfmiddlewaretoken')
 
 
 class TestSingleProduct(TestCase):

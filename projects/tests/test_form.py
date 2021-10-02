@@ -15,7 +15,7 @@ class CreateProjectTests(TestCase):
         self.assertEqual(self.response.status_code, 200)
 
     def test_create_project_view_func(self):
-        view = resolve('/project/create_project/')
+        view = resolve('/projects/create_project/')
         self.assertEqual(view.func, create_project)
 
     def test_csrf(self):
