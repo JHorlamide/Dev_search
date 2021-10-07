@@ -8,8 +8,6 @@ from .models import Profile
 @receiver(post_save, sender=User)
 def createProfile(sender, instance, created, **kwargs):
     if created:
-        print('Profile updated')
-        print('Profile Instance: ', instance)
         user = instance
         profile = Profile.objects.create(
             user=user,
@@ -23,3 +21,14 @@ def createProfile(sender, instance, created, **kwargs):
 def profileDelete(sender, instance, **kwargs):
     user = instance.user
     user.delete()
+
+
+@receiver(post_save, sender=Profile)
+def updateUser(sender, instance, created, **kwargs):
+    profile = instance
+    user = profile.user
+    if created == False:
+        user.first_name = profile.name
+        user.username = profile.username
+        user.email = profile.email
+        user.save()

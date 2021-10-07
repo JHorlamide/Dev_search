@@ -38,3 +38,8 @@ class UserProfileTests(TestCase):
     
     def test_user_profile_view_status_code(self):
         self.assertEqual(self.response.status_code, 200)
+
+class UserAccountTest(TestCase):
+    def setUp(self):
+        url = reverse('user_account')
+        self.response = self.client.get(url)

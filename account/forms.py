@@ -1,6 +1,9 @@
 from django.contrib.auth.forms import UserCreationForm
+from django.forms import ModelForm
 from django import forms
 from django.contrib.auth.models import User
+
+from .models import Profile
 
 
 class RegisterForm(UserCreationForm):
@@ -29,3 +32,11 @@ class LoginForm(UserCreationForm):
     class Meta:
         model = User
         fields = ('email', 'password')
+
+
+class AccountForm(ModelForm):
+
+    class Meta:
+        model = Profile
+        exclude = ('user',)
+        # fields = '__all__'
