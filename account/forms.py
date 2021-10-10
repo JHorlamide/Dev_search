@@ -3,7 +3,7 @@ from django.forms import ModelForm
 from django import forms
 from django.contrib.auth.models import User
 
-from .models import Profile
+from .models import Profile, Skill
 
 
 class RegisterForm(UserCreationForm):
@@ -35,8 +35,26 @@ class LoginForm(UserCreationForm):
 
 
 class AccountForm(ModelForm):
-
     class Meta:
         model = Profile
         exclude = ('user',)
-        # fields = '__all__'
+
+    def __init__(self, *args, **kwargs):
+        super(AccountForm, self).__init__(*args, **kwargs)
+
+        for _, field in self.fields.items():
+            field.widget.attrs.update(
+                {'class': 'input', 'id': 'formInput#text'})
+
+
+class SkillForm(ModelForm):
+    class Meta:
+        model = Skill
+        fields = ('name', 'description')
+
+    def __init__(self, *args, **kwargs):
+        super(SkillForm, self).__init__(*args, **kwargs)
+
+        for _, field in self.fields.items():
+            field.widget.attrs.update(
+                {'class': 'input', 'id': 'formInput#text'})
