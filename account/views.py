@@ -6,12 +6,17 @@ from django.contrib import messages
 
 from .forms import RegisterForm, AccountForm, SkillForm
 from .models import Profile
-from .utiils import searchProfiles
+from .utiils import searchProfiles, paginateProfiles
 
 
 def profiles(request):
     profiles, search_query = searchProfiles(request)
-    context = {'profiles': profiles, 'search_query': search_query}
+    custom_range, profiles = paginateProfiles(request, profiles, 1)
+    context = {
+        'profiles': profiles,
+        'search_query': search_query,
+        "custom_range": custom_range
+    }
     return render(request, 'account/profiles.html', context)
 
 
@@ -20,8 +25,12 @@ def userProfile(request, pk):
     Topskills = profile.skill_set.exclude(description__exact="")
     otherSkills = profile.skill_set.filter(description="")
 
-    context = {'profile': profile, 'top_skills': Topskills,
-               'other_skills': otherSkills}
+    context = {
+        'profile': profile,
+        'top_skills': Topskills,
+        'other_skills': otherSkills
+    }
+
     return render(request, 'account/user_profile.html', context)
 
 

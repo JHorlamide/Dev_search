@@ -5,31 +5,18 @@ from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 
 from . models import Project
 from . forms import ProjectForm
-from . utils import searchProject
+from . utils import searchProject, paginateProject
+
 
 def projects(request):
     projects, search_query = searchProject(request)
 
-    page = request.GET.get('page')
-    project_per_page = 3
-    paginator = Paginator(projects, project_per_page)
-
-    try:
-        projects = paginator.page(page)
-    except PageNotAnInteger:
-        page = 1
-        projects = paginator.page(page)
-    except EmptyPage:
-        page = paginator.num_pages
-        projects = paginator.page(page)
-
-    custom_range = range(1, 20)
+    custom_range, projects = paginateProject(request, projects, 3)
 
     context = {
-        'projects': projects, 
-        "search_query": search_query, 
-        "paginator": paginator, 
-        "custome_range": custom_range
+        'projects': projects,
+        "search_query": search_query,
+        "custom_range": custom_range
     }
     return render(request, 'projects/projects.html', context)
 
@@ -81,4 +68,3 @@ def deleteProject(request, projectId):
         return redirect('projects')
     context = {'object': project}
     return render(request, 'delete_template.html', context)
-
