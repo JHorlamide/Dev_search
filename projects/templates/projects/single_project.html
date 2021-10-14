@@ -37,14 +37,18 @@
               {{ project.vote_ratio }}% Positive Feedback ({{ project.vote_total }} Vote{{project.vote_total|pluralize:'s' }})
             </h5>
 
-            <form class="form" action="#" method="POST">
+            <form class="form" action="" method="POST">
               {% csrf_token %}
+
               <!-- Textarea -->
               <div class="form__field">
-                <label for="formInput#textarea">Comments: </label>
-                <textarea class="input input--textarea" name="message" id="formInput#textarea"
+                <label for="formInput#textarea">Comments Olamide: </label>
+                <textarea 
+                  class="input input--textarea" 
+                  name="message" id="formInput#textarea"
                   placeholder="Write your comments here..."></textarea>
               </div>
+
               <input class="btn btn--sub btn--lg" type="submit" value="Comments" />
             </form>
 
@@ -52,10 +56,11 @@
               <div class="comment">
                 {% for review in project.reviews.all %}
                   <a href="profile.html">
-                    <img class="avatar avatar--md" src="https://avatars.githubusercontent.com/u/33843378" alt="user" />
+                    <img class="avatar avatar--md" src="{{ review.owner.profile_image.url }}" alt="user" />
                   </a>
+
                   <div class="comment__details">
-                    <a href="profile.html" class="comment__author">Dennis Ivanov</a>
+                    <a href="profile.html" class="comment__author">Dennis Ivanov Olamide</a>
                     <p class="comment__info">
                       Consectetur adipisicing elit. Reprehenderit alias numquam perferendis mollitia minus minima
                       exercitationem possimus ab deserunt qui, ratione, dignissimos ut magni laborum quo.

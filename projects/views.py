@@ -1,10 +1,9 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
-from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 
 
 from . models import Project
-from . forms import ProjectForm
+from . forms import ProjectForm, ReviewForm
 from . utils import searchProject, paginateProject
 
 
@@ -68,3 +67,14 @@ def deleteProject(request, projectId):
         return redirect('projects')
     context = {'object': project}
     return render(request, 'delete_template.html', context)
+
+
+@login_required(login_url="login")
+def addReview(request, projectId):
+    if request.method == 'POST':
+        form = ReviewForm(request.POST)
+        if form.is_valid():
+            project = form.save(commit=False)
+
+    context = {"form": form}
+    return render(request, 'single_project.html', context)

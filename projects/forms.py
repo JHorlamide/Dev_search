@@ -1,5 +1,5 @@
 from django.forms import ModelForm, Textarea, CheckboxSelectMultiple
-from .models import Project
+from .models import Project, Review
 
 
 class ProjectForm(ModelForm):
@@ -21,3 +21,16 @@ class ProjectForm(ModelForm):
             'description': Textarea(attrs={'cols': 30, 'rows': 5}),
             'tags': CheckboxSelectMultiple()
         }
+
+
+class ReviewForm(ModelForm):
+    def __init__(self, *args, **kwargs):
+        super(ReviewForm, self).__init__(*args, **kwargs)
+
+        # To access each field at once loop through all fields and update.
+        for name, field in self.fields.items():
+            field.widget.attrs.update({'class': 'input'})
+        
+    class Meta:
+        model = Review
+        fields = '__all__'
