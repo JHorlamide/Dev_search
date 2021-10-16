@@ -28,9 +28,13 @@ class ReviewForm(ModelForm):
         super(ReviewForm, self).__init__(*args, **kwargs)
 
         # To access each field at once loop through all fields and update.
-        for name, field in self.fields.items():
+        for _, field in self.fields.items():
             field.widget.attrs.update({'class': 'input'})
         
     class Meta:
         model = Review
-        fields = '__all__'
+        fields = ['value', 'body']
+        labels = {
+            "value": "Place your vote",
+            "body": "Add a comment to your vote"
+        }

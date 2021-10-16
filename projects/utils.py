@@ -44,6 +44,5 @@ def paginateProject(request, projects, project_per_page):
         rightIndex = paginator.num_pages + 1
 
     custom_range = range(leftIndex, rightIndex)
-    print("Custom Range Projects: ", custom_range)
 
     return custom_range, projects

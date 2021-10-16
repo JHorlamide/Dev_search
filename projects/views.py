@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
-
+from django.contrib import messages
 
 from . models import Project
 from . forms import ProjectForm, ReviewForm
@@ -22,7 +22,22 @@ def projects(request):
 
 def project(request, pk):
     project = Project.objects.get(id=pk)
-    return render(request, 'projects/single_project.html', {'project': project})
+    form = ReviewForm()
+    if request.method == 'POST':
+        form = ReviewForm(request.POST)
+        if form.is_valid():
+            review = form.save(commit=False)
+            review.project = project
+            review.owner = request.user.profile
+            review.save()
+            
+            project.getVoteCount
+
+            messages.success(request, "Review added successfully")
+            return redirect("project", pk=project.id)
+
+    context = {"form": form, 'project': project}
+    return render(request, 'projects/single_project.html', context)
 
 
 @login_required(login_url='login')
@@ -67,14 +82,3 @@ def deleteProject(request, projectId):
         return redirect('projects')
     context = {'object': project}
     return render(request, 'delete_template.html', context)
-
-
-@login_required(login_url="login")
-def addReview(request, projectId):
-    if request.method == 'POST':
-        form = ReviewForm(request.POST)
-        if form.is_valid():
-            project = form.save(commit=False)
-
-    context = {"form": form}
-    return render(request, 'single_project.html', context)
